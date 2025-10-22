@@ -16,7 +16,9 @@ The goal is to **translate theory into working prototypes** and to document ever
 
 ---
 
-## 🧩 Project Structure
+## 🧩 Project Structure  
+
+```
 presburger-polyhedral-lab/
 │
 ├── docs/ # Reading notes and algorithm explanations
@@ -44,9 +46,7 @@ presburger-polyhedral-lab/
 │ └── references.bib
 │
 └── README.md
-
-
----
+```
 
 ## 🔧 Dependencies
 
