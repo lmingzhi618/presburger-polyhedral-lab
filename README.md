@@ -87,7 +87,7 @@ Bondhugula, U. et al. “Pluto: Automatic parallelization using affine transform
 ⚖️ License
 
 MIT License.
-This project is for personal learning and research only and is not affiliated with MathWorks.
+This project is for personal learning and research only and is not affiliated with any company.
 
 🙌 Acknowledgment
 
