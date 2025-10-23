@@ -3,7 +3,6 @@
 This is a **personal learning repository** inspired by the book *Presburger Formula and Polyhedral Compilation*.  
 Issues and pull requests are welcome for discussion and collaboration, but please note the following scope and guidelines.
 
----
 
 ## 🎯 Scope
 
@@ -12,7 +11,6 @@ Issues and pull requests are welcome for discussion and collaboration, but pleas
 - The repository does **not** represent any company or organization.  
 - Please avoid using or referencing any proprietary or confidential materials.
 
----
 
 ## ⚙️ Development Setup
 
@@ -27,7 +25,6 @@ You may use a virtual environment:
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
----
 
 ## 🧩 Code Style Guidelines
 	•	Use Python 3.10+
@@ -37,7 +34,6 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 	•	Use docstrings ("""...""") to document functions and classes clearly
 	•	Keep modules minimal and composable (each directory is one conceptual layer)
 
----
 
 ## 🧪 Testing
 
@@ -51,7 +47,6 @@ For a specific test module:
 pytest tests/test_presburger.py
 ```
 
----
 
 ## 🧠 Suggested Contribution Areas
 
@@ -61,7 +56,6 @@ If you want to add or improve something:
 	•	Add new examples (matrix multiplication, stencil, reduction)
 	•	Write explanatory notes or mathematical derivations in docs/
 
----
 
 ## 📜 Commit & Branching
 
@@ -79,7 +73,6 @@ For larger work, create a branch:
 git checkout -b feature/scheduler
 ```
 
----
 
 ## 📖 Documentation
 
@@ -92,14 +85,12 @@ Keep explanatory notes in docs/:
 
 Each doc should include both math definitions and implementation notes.
 
----
 
 ## ⚖️ License
 
 MIT License.
 By contributing, you agree that your code will be released under the same license.
 
----
 
 ## 🙌 Acknowledgment
 
