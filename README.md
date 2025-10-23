@@ -62,6 +62,7 @@ presburger-polyhedral-lab/
 git clone https://github.com/<yourname>/presburger-polyhedral-lab.git
 cd presburger-polyhedral-lab
 pip install -r requirements.txt
+```
 
 Example usage (coming soon):
 -- python examples/matrix_multiply/demo.py
