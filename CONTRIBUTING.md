@@ -27,6 +27,7 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 
 ## 🧩 Code Style Guidelines
+
 	•	Use Python 3.10+
 	•	Follow PEP8 conventions
 	•	Use type hints and mypy when practical
