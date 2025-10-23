@@ -14,7 +14,6 @@ It serves as a **hands-on laboratory** for learning and experimenting with:
 
 The goal is to **translate theory into working prototypes** and to document every step for educational and research use.
 
----
 
 ## 🧩 Project Structure  
 
@@ -56,7 +55,6 @@ presburger-polyhedral-lab/
 - `matplotlib` / `plotly` for visualization  
 - (Optional) `islpy` for interoperability with ISL
 
----
 
 ## 🚀 Getting Started
 
@@ -68,7 +66,7 @@ pip install -r requirements.txt
 Example usage (coming soon):
 -- python examples/matrix_multiply/demo.py
 
-📚 Learning Roadmap
+## 📚 Learning Roadmap
 Stage	Topic	Goal
 1️⃣	Presburger arithmetic	Implement set and constraint manipulation
 2️⃣	Polyhedral representation	Define iteration domains and access functions
@@ -84,12 +82,12 @@ Feautrier, P. “Dataflow analysis of array and scalar references.” (1991)
 
 Bondhugula, U. et al. “Pluto: Automatic parallelization using affine transformations.” (2008)
 
-⚖️ License
+## ⚖️ License
 
 MIT License.
 This project is for personal learning and research only and is not affiliated with any company.
 
-🙌 Acknowledgment
+## 🙌 Acknowledgment
 
 This repository is part of my self-learning journey bridging compiler theory, high-performance computing, and affine transformations.
 Contributions and discussions are welcome.
