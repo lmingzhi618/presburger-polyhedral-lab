@@ -27,7 +27,9 @@ You may use a virtual environment:
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-🧩 Code Style Guidelines
+---
+
+## 🧩 Code Style Guidelines
 	•	Use Python 3.10+
 	•	Follow PEP8 conventions
 	•	Use type hints and mypy when practical
@@ -35,8 +37,9 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 	•	Use docstrings ("""...""") to document functions and classes clearly
 	•	Keep modules minimal and composable (each directory is one conceptual layer)
 
+---
 
-🧪 Testing
+## 🧪 Testing
 
 Run all tests:
 ```bash
@@ -48,7 +51,9 @@ For a specific test module:
 pytest tests/test_presburger.py
 ```
 
-🧠 Suggested Contribution Areas
+---
+
+## 🧠 Suggested Contribution Areas
 
 If you want to add or improve something:
 	•	Implement missing algorithms from the book
@@ -56,7 +61,9 @@ If you want to add or improve something:
 	•	Add new examples (matrix multiplication, stencil, reduction)
 	•	Write explanatory notes or mathematical derivations in docs/
 
-📜 Commit & Branching
+---
+
+## 📜 Commit & Branching
 
 Follow a clean commit convention:
 ```bash
@@ -72,7 +79,9 @@ For larger work, create a branch:
 git checkout -b feature/scheduler
 ```
 
-📖 Documentation
+---
+
+## 📖 Documentation
 
 Keep explanatory notes in docs/:
 	•	ch1_presburger.md — Presburger arithmetic foundations
@@ -83,14 +92,16 @@ Keep explanatory notes in docs/:
 
 Each doc should include both math definitions and implementation notes.
 
-⚖️ License
+---
+
+## ⚖️ License
 
 MIT License.
 By contributing, you agree that your code will be released under the same license.
 
-⸻
+---
 
-🙌 Acknowledgment
+## 🙌 Acknowledgment
 
 This project exists to bridge theory and practice in compiler research.
 Contributions, discussions, and educational forks are welcome!
