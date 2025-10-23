@@ -24,7 +24,7 @@ pip install -r requirements.txt
 You may use a virtual environment:
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
+```
 
 ## 🧩 Code Style Guidelines
 
