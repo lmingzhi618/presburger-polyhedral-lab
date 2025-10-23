@@ -1,0 +1,6 @@
+sympy>=1.12
+z3-solver>=4.12.2.0
+matplotlib>=3.8
+plotly>=5.22
+# optional
+islpy>=2024.1; platform_system!='Windows'
