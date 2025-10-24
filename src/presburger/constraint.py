@@ -19,6 +19,8 @@ class LinearConstraint:
             return lhs < self.constant
         elif self.relation == ">=":
             return lhs >= self.constant 
+        elif self.relation == ">":
+            return lhs > self.constant 
         elif self.relation == "=":
             return lhs == self.constant
         elif self.relation == "!=":
