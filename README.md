@@ -82,15 +82,15 @@ pip install -r requirements.txt
 Example usage (coming soon):
 -- python examples/matrix_multiply/demo.py
 
-## 📚 Learning Roadmap
-Stage	Topic	Goal
-1️⃣	Presburger arithmetic	Implement set and constraint manipulation
-2️⃣	Polyhedral representation	Define iteration domains and access functions
-3️⃣	Dependence analysis	Build dependence polyhedra
-4️⃣	Scheduling	Apply affine scheduling algorithms
-5️⃣	Code generation	Produce transformed loop nests
-6️⃣	Visualization	Plot iteration spaces and transformations
-📖 Reference Materials
+## 📚 Learning Roadmap  
+Stage	Topic	Goal  
+1️⃣	Presburger arithmetic	Implement set and constraint manipulation  
+2️⃣	Polyhedral representation	Define iteration domains and access functions  
+3️⃣	Dependence analysis	Build dependence polyhedra  
+4️⃣	Scheduling	Apply affine scheduling algorithms  
+5️⃣	Code generation	Produce transformed loop nests  
+6️⃣	Visualization	Plot iteration spaces and transformations  
+📖 Reference Materials  
 
 Presburger Formula and Polyhedral Compilation
 
