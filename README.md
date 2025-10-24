@@ -21,40 +21,33 @@ The goal is to **translate theory into working prototypes** and to document ever
 presburger-polyhedral-lab/
 │
 ├── docs/ # Reading notes and algorithm explanations
-│ ├── ch1_presburger.md
-│ ├── ch2_polyhedral_model.md
-│ ├── ch3_dependence_analysis.md
-│ ├── ch4_scheduling.md
-│ └── ch5_codegen.md
+│ ├── ch1_introduction.md
+│ ├── ch2_sets_named_tuples.md
+│ ├── ch3_presburger_sets_relations.md
+│ ├── ch4_piecewise_expressions.md
+│ ├── ch5_polyhedral_model.md
+│ ├── ch6_dependence_analysis.md
+│ └── ch7_codegen_appendix.md
 │
 ├── src/ # Core implementation
-├── presburger/
-│   ├── constraint.py         # Ch3.1–3.3: Atomic constraints
-│   ├── formula.py            # Ch3.2: Presburger formulas, Boolean ops
-│   ├── simplifier.py         # Ch3.7: Simplification, QE
-│   └── utils.py              # Helper functions for symbolic operations
+│   ├── presburger/                   # Linear constraints and Presburger formulas
+│   │   ├── constraint.py
+│   │   └── formula.py
+│   │
+│   ├── polyhedral/                   # Sets, relations, and affine expressions
+│   │   ├── sets.py
+│   │   ├── relations.py
+│   │   └── expressions.py
+│   │
+│   ├── dependence/                   # Dependence and dataflow analysis
+│   │   └── analysis.py
+│   │
+│   ├── scheduler/                    # Scheduling and transformations
+│   │   └── schedule.py
+│   │
+│   └── codegen/                      # Code generation (e.g., loop nests)
+│       └── generator.py
 │
-├── polyhedral/
-│   ├── sets.py               # Ch2.1–2.2: Named integer tuples, set ops
-│   ├── relations.py          # Ch2.3: Binary relations
-│   ├── wrapped_relations.py  # Ch2.4: Wrapped domain/range relations
-│   ├── expressions.py        # Ch4: Piecewise affine/quasi-affine expr
-│   └── model.py              # Ch5: Polyhedral model core (instances, access)
-│
-├── dependence/
-│   ├── analysis.py           # Ch6.1–6.2: Dependence & dataflow
-│   ├── approximate.py        # Ch6.3–6.4: Approximate analysis
-│   ├── live_out.py           # Ch6.6: Live-out access
-│   └── utils.py
-│
-├── scheduler/
-│   ├── schedule.py           # Ch5.6: Schedule representation
-│   ├── parallelism.py        # Ch5.6.3: Encoding parallelism
-│   └── transformations.py    # Loop transformations (tiling, fusion, etc.)
-│
-└── codegen/
-│   ├── isl_codegen.py        # Ch5.8–5.9: Code generation from schedule
-│   └── c_codegen.py          # Convert schedule to C AST
 │
 ├── examples/ # Experiments and demos
 │ ├── matrix_multiply/
