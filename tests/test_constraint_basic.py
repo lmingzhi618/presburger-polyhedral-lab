@@ -1,6 +1,6 @@
 import pytest
 
-from src.presburger.constraint import LinearConstraint
+from presburger.constraint import LinearConstraint
 
 
 def test_constraint_parsing_and_evaluation():
@@ -14,6 +14,7 @@ def test_negative_and_multiple_terms():
     c2 = LinearConstraint.from_str("-x + 2y >= 4")
     assert not c2.evaluate({"x": 1, "y": 2})  # -1 + 4 >= 3 -> False
     assert c2.evaluate({"x": 1, "y": 3})  # 1 + 6 >= 4 -> True
+    assert str(c2) == "-x + 2y >= 4"
 
 
 def test_all_relations():
@@ -54,3 +55,15 @@ def test_invalid_expressions():
 def test_missing_variable_in_eval_defaults_to_zero():
     c = LinearConstraint.from_str("x + y <= 3")
     assert c.evaluate({"x": 3})  # y defaults to 0
+
+
+def test_unsuported_relation():
+    c = LinearConstraint(coefficients={"x": 1}, constant=5, relation=">>")
+    with pytest.raises(ValueError):
+        c.evaluate({})
+
+
+def test_no_variables_found():
+    # Expression without variables should raise ValueError
+    with pytest.raises(ValueError):
+        LinearConstraint.from_str("3 <= 5")
