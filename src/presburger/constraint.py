@@ -1,30 +1,30 @@
 # constraint.py
+import re
 from dataclasses import dataclass
 from typing import Dict
-import re
 
 
 @dataclass
 class LinearConstraint:
-    coefficients: Dict[str, int]    # variables and coefficients, e.g. {"x": 1, "y": 2}
-    constant: int                   # constant b
-    relation: str                   # "<=", "<", ">=", "=", "!="
+    coefficients: Dict[str, int]  # variables and coefficients, e.g. {"x": 1, "y": 2}
+    constant: int  # constant b
+    relation: str  # "<=", "<", ">=", "=", "!="
 
     def evaluate(self, values: Dict[str, int]) -> bool:
         """Check if the constraint holds for given variable assignments."""
         lhs = sum(v * values.get(k, 0) for k, v in self.coefficients.items())
         if self.relation == "<=":
-            return lhs <= self.constant 
+            return lhs <= self.constant
         elif self.relation == "<":
             return lhs < self.constant
         elif self.relation == ">=":
-            return lhs >= self.constant 
+            return lhs >= self.constant
         elif self.relation == ">":
-            return lhs > self.constant 
+            return lhs > self.constant
         elif self.relation == "=":
             return lhs == self.constant
         elif self.relation == "!=":
-            return lhs != self.constant 
+            return lhs != self.constant
         else:
             raise ValueError(f"Unsupported relation {self.relation}")
 
@@ -42,6 +42,23 @@ class LinearConstraint:
         # Normalize whitespace
         expr = expr.strip().replace(" ", "")
 
+        # Handle chained inequalities like "0 <= i <= 4"
+        ops = re.findall(r"(<=|>=|!=|=|<|>)", expr)
+        if len(ops) > 1:
+            # Split into 3 parts: a, b, c
+            parts = re.split(r"(<=|>=|!=|=|<|>)", expr)
+            # Filter out empty and operator parts
+            tokens = [p.strip() for p in parts if p and p not in ops]
+            if len(tokens) == 3 and len(ops) == 2:
+                a, b, c = tokens
+                rel1, rel2 = ops
+                return [
+                    LinearConstraint.from_str(f"{a} {rel1} {b}"),
+                    LinearConstraint.from_str(f"{b} {rel2} {c}"),
+                ]
+            else:
+                raise ValueError(f"Cannot parse chained comparision: '{expr}'")
+
         # Find the relational operator
         match = re.search(r"(<=|>=|!=|=|<|>)", expr)
         if not match:
@@ -52,7 +69,15 @@ class LinearConstraint:
         try:
             constant = int(rhs)
         except ValueError:
-            raise ValueError(f"Right-hand side must be an integer: '{rhs}'")
+            # check if it's reversed: constant on left, variable on right
+            try:
+                constant = int(lhs)
+                lhs, rhs = rhs, lhs
+                # flip relational operator
+                flip = {"<=": ">=", ">=": "<=", "<": ">", ">": "<"}
+                relation = flip.get(relation, relation)
+            except ValueError:
+                raise ValueError(f"Right-hand side must be an integer: '{rhs}'")
 
         # Extract terms fro mlhs (like 3x, -y, +2z)
         # Regex: optional sign, optional digits, then variable name
@@ -71,7 +96,6 @@ class LinearConstraint:
         # Make sure to return the new instance
         return LinearConstraint(coefficients, constant, relation)
 
-
     def __str__(self) -> str:
         """Return a human readable representation like 'x + 2y <= 5'."""
         terms = []
@@ -84,5 +108,3 @@ class LinearConstraint:
                 terms.append(f"{coef}{var}")
         lhs = " + ".join(terms).replace("+ -", "- ")
         return f"{lhs} {self.relation} {self.constant}"
-
-
