@@ -67,3 +67,11 @@ def test_no_variables_found():
     # Expression without variables should raise ValueError
     with pytest.raises(ValueError):
         LinearConstraint.from_str("3 <= 5")
+
+
+def test_from_str_invalid_chained_comparison():
+    """Covers ValueError raised in chained inequality parsing."""
+    # 3 comparisons, cannot split into 3 tokens/2 ops
+    with pytest.raises(ValueError) as excinfo:
+        LinearConstraint.from_str("i <= j <= k <= 5")
+    assert "Cannot parse chained comparison" in str(excinfo.value)

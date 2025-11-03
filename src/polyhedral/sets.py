@@ -81,23 +81,61 @@ class IntegerSet:
         return False
 
     def __str__(self) -> str:
-        joined = ", ".join(str(c) for c in self.constraints)
-        vars_str = sorted({v for c in self.constraints for v in c.coefficients.keys()})
-        return f"{{ ({', '.join(vars_str)}) | {joined} }}"
+        if self.subsets:
+            return " u ".join([str(s) for s in self.subsets])
+        joined = " ∧ ".join(str(c) for c in self.constraints)
+        return f"{{ {joined} }}"
 
     @staticmethod
     def from_formula(formula: PresburgerFormula) -> IntegerSet:
         """
-        Convert a formula into a IntegerSet if it's a conjunction of constraints.
-        For disjunctions, split branches (union of sets).
+        Build an IntegerSet from a PresburgerFormula
+        - atom(constraint)  -> a single-conjunct set
+        - and(children)     -> intersection; if any child is a union, distribute
+        - or(children)      -> union (flattened)
         """
-        constraints: List[LinearConstraint] = []
+        if formula.op == "atom":
+            if getattr(formula, "constraint", None) is None:
+                return IntegerSet([])
+            return IntegerSet([formula.constraint])
+
+        if formula.op == "or":
+            subsets: list[IntegerSet] = []
+            for ch in formula.children or []:
+                s = IntegerSet.from_formula(ch)
+                if s.subsets:
+                    subsets.extend(s.subsets)
+                else:
+                    subsets.append(s)
+            return IntegerSet(subsets=subsets)
+
         if formula.op == "and":
-            for child in formula.children:
-                if child.op == "atom" and child.constraint is not None:
-                    constraints.append(child.constraint)
-        elif formula.op == "or":
-            # Simplified: return first branch for prototype
-            if isinstance(formula.children[0], PresburgerFormula):
-                return IntegerSet.from_formula(formula.children[0])
-        return IntegerSet(constraints)
+            parts: list[IntegerSet] = [
+                IntegerSet.from_formula(ch) for ch in (formula.children or [])
+            ]
+            return IntegerSet._and_distribute(parts)
+
+        return IntegerSet([])
+
+    @staticmethod
+    def _intersect_two(a: "IntegerSet", b: "IntegerSet") -> "IntegerSet":
+        if not a.subsets and not b.subsets:
+            return IntegerSet(a.constraints + b.constraints)
+
+        # A∩(B1∪B2)=(A∩B1)∪(A∩B2)
+        a_opts = a.subsets if a.subsets else [a]
+        b_opts = b.subsets if b.subsets else [b]
+        out_subsets: list[IntegerSet] = []
+        for sa in a_opts:
+            for sb in b_opts:
+                out_subsets.append(IntegerSet(sa.constraints + sb.constraints))
+        return IntegerSet(subsets=out_subsets)
+
+    @staticmethod
+    def _and_distribute(sets: list["IntegerSet"]) -> "IntegerSet":
+        if not sets:
+            return IntegerSet([])
+        acc = sets[0]
+        for s in sets[1:]:
+            acc = IntegerSet._intersect_two(acc, s)
+        return acc

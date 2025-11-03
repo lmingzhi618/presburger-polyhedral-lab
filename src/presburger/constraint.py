@@ -57,7 +57,7 @@ class LinearConstraint:
                     LinearConstraint.from_str(f"{b} {rel2} {c}"),
                 ]
             else:
-                raise ValueError(f"Cannot parse chained comparision: '{expr}'")
+                raise ValueError(f"Cannot parse chained comparison: '{expr}'")
 
         # Find the relational operator
         match = re.search(r"(<=|>=|!=|=|<|>)", expr)

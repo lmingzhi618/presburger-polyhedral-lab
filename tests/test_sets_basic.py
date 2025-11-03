@@ -51,6 +51,20 @@ def test_string_representation():
             LinearConstraint.from_str("j >= 0"),
         ]
     )
+    assert S.is_empty() is False
     s = str(S)
     assert "i" in s and "j" in s
-    assert "{" in s and "|" in s and "}" in s
+    assert "0" in s and "1" in s
+    assert "{" in s and "}" in s
+
+
+def test_str_with_subsets():
+    S1 = IntegerSet([LinearConstraint.from_str("i <= 1")])
+    S2 = IntegerSet([LinearConstraint.from_str("i >= 3")])
+    S_union = IntegerSet(subsets=[S1, S2])
+
+    s = str(S_union)
+
+    assert "u" in s or "{" in s
+    assert "i" in s
+    assert isinstance(s, str)
