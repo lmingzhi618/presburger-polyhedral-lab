@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-from sympy import simpify
+from sympy import sympify
 
 from polyhedral.sets import IntegerSet
 from presburger.constraint import LinearConstraint
@@ -29,14 +29,14 @@ class Relation:
         """Apply relation maping of point ∈ domain."""
         if not self.domain.contains(point):
             return None
-
-        result = {}
+        result: dict[str, int] = {}
         for k, expr in self.mapping.items():
             try:
                 symbolic_expr = sympify(expr)
                 value = symbolic_expr.subs(point)
                 result[k] = int(value)
             except Exception as e:
+                print(f"exception: {e}")
                 raise ValueError(f"Invalid mapping expression '{expr}': {e}")
         return result
 
@@ -44,7 +44,6 @@ class Relation:
         """Return the inverse relation (swap domain and range)."""
         if len(set(self.mapping.values())) != len(self.mapping):
             raise ValueError("Mapping not invertible")
-
         inverse_map = {v: k for k, v in self.mapping.items()}
         return Relation(self.range, self.domain, inverse_map)
 
@@ -55,10 +54,13 @@ class Relation:
         self: B -> C
         result: A -> C
         """
-        if self.domain != other.range:
-            raise ValueError("Cannot compose: range/domain mismatch")
+        if not isinstance(other, Relation):
+            raise TypeError("compose expects another Relation")
 
-        subs_map = {var: sympify(e) for var, e in other.mapping.items()}
+        if not self.domain.is_compatible_with(other.range):
+            raise ValueError("Cannot compose: incompatible dimensions")
+
+        subs_map = {k: sympify(v) for k, v in other.mapping.items()}
         composed_mapping: dict[str, str] = {}
         for out_var, expr in self.mapping.items():
             sym_expr = sympify(expr)
@@ -81,23 +83,22 @@ class Relation:
         # Clean input
         expr = expr.strip().removeprefix("{").removesuffix("}").strip()
 
-        # Split mapping and condition
         mapping_part, _, cond_part = expr.partition("|")
-        # Split LHS -> RHS
         if "->" not in mapping_part:
             raise ValueError(f"Invalid relation: {expr}")
-        lhs, rhs = [x.strip() for x in mapping_part.split("->")]
-
-        # Remove parentheses
-        lhs = lhs.removeprefix("(").removesuffix(")")
-        rhs = rhs.removeprefix("(").removesuffix(")")
+        lhs, rhs = [
+            x.strip().removeprefix("(").removesuffix(")")
+            for x in mapping_part.split("->")
+        ]
 
         lhs_vars = [v.strip() for v in lhs.split(",") if v.strip()]
-        rhs_exprs = [v.strip() for v in rhs.split(",") if v.strip()]
+        rhs_exprs = [str(sympify(v.strip())) for v in rhs.split(",") if v.strip()]
 
-        mapping = {
-            lhs_vars[i]: rhs_exprs[i] for i in range(min(len(lhs_vars), len(rhs_exprs)))
-        }
+        min_len = min(len(lhs_vars), len(rhs_exprs))
+        if min_len == 0:
+            raise ValueError("No valid mapping variables found.")
+
+        mapping = dict(zip(lhs_vars[:min_len], rhs_exprs[:min_len]))
 
         # Simplified - no real constraints parsing
         domain = IntegerSet([])

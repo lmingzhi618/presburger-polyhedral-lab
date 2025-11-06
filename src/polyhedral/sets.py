@@ -139,3 +139,31 @@ class IntegerSet:
         for s in sets[1:]:
             acc = IntegerSet._intersect_two(acc, s)
         return acc
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, IntegerSet):
+            return False
+
+        # Compare subsets recursively
+        if bool(self.subsets) or bool(other.subsets):
+            if len(self.subsets) != len(other.subsets):
+                return False
+            return all(
+                a == b
+                for a, b in zip(
+                    sorted(self.subsets, key=str), sorted(other.subsets, key=str)
+                )
+            )
+
+        # Compare constraint sets (order-insensitive)
+        self_constraints = {str(c) for c in self.constraints}
+        other_constraints = {str(c) for c in other.constraints}
+        return self_constraints == other_constraints
+
+    def is_compatible_with(self, other: "IntegerSet") -> bool:
+        """Check if two sets live in the same variable space."""
+        self_vars = {v for c in self.constraints for v in c.coefficients}
+        other_vars = {v for c in other.constraints for v in c.coefficients}
+        print(f"self_vars: {self_vars}, other_vars: {other_vars}")
+        print(f"self_vars == other_vars: {self_vars == other_vars}")
+        return self_vars == other_vars

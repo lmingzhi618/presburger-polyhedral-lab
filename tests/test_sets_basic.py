@@ -68,3 +68,37 @@ def test_str_with_subsets():
     assert "u" in s or "{" in s
     assert "i" in s
     assert isinstance(s, str)
+
+
+def test_eq():
+    S1 = IntegerSet(
+        [LinearConstraint.from_str("i >= 0"), LinearConstraint.from_str("j >= 0")]
+    )
+    S2 = IntegerSet(
+        [LinearConstraint.from_str("j >= 0"), LinearConstraint.from_str("i >= 0")]
+    )
+    assert S1 != 123
+    assert S1 == S2
+
+    S1 = IntegerSet(
+        subsets=[
+            IntegerSet([LinearConstraint.from_str("i >= 0")]),
+            IntegerSet([LinearConstraint.from_str("j >= 0")]),
+        ]
+    )
+    S2 = IntegerSet(
+        subsets=[
+            IntegerSet([LinearConstraint.from_str("j >= 0")]),
+            IntegerSet([LinearConstraint.from_str("i >= 0")]),
+        ]
+    )
+    S3 = IntegerSet(subsets=[IntegerSet([LinearConstraint.from_str("j >= 1")])])
+    assert S1 == S2
+    assert S2 != S3
+
+    S5 = IntegerSet(
+        [
+            LinearConstraint.from_str("i >= 0"),
+        ]
+    )
+    assert S1 != S5  # ✅ structure mismatch
